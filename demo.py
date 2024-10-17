@@ -54,7 +54,7 @@ def main(args):
          view['img'] = view['img'].to(args.device, non_blocking=True)
            
 
-    demo_name = args.demo_path.split("/")[-1]
+    demo_name = os.path.basename(os.path.dirname(args.demo_path))
 
     print(f'Started reconstruction for {demo_name}')
 
