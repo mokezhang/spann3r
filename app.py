@@ -14,8 +14,8 @@ import trimesh
 from scipy.spatial.transform import Rotation
 
 # Default values
-DEFAULT_CKPT_PATH = 'https://huggingface.co/spaces/Stable-X/StableSpann3R/resolve/main/checkpoints/spann3r.pth'
-DEFAULT_DUST3R_PATH = 'https://huggingface.co/camenduru/dust3r/resolve/main/DUSt3R_ViTLarge_BaseDecoder_512_dpt.pth'
+DEFAULT_CKPT_PATH = 'checkpoints\spann3r.pth'
+DEFAULT_DUST3R_PATH = 'checkpoints\DUSt3R_ViTLarge_BaseDecoder_512_dpt.pth'
 DEFAULT_DEVICE = 'cuda:0' if torch.cuda.is_available() else 'cpu'
 
 OPENGL = np.array([[1, 0, 0, 0],
@@ -171,7 +171,10 @@ def reconstruct(video_path, conf_thresh, kf_every, as_pointcloud=False):
     scene.export(output_path)
     
     # Clean up temporary directory
-    os.system(f"rm -rf {demo_path}")
+    if os.name == 'nt':
+        os.system(f"rmdir /S /Q {demo_path}")
+    else:
+        os.system(f"rm -rf {demo_path}")
     
     return output_path, f"Reconstruction completed. FPS: {fps:.2f}"
 
